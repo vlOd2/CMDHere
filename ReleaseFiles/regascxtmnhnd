@@ -1,0 +1,4 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\Directory\Background\shellex\ContextMenuHandlers\CMDHere]
+@="{56576E75-D0BA-43F5-A301-313054AB6629}"

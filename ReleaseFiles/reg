@@ -1,0 +1,57 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\CMDHereShellExtension]
+@="CMDHereShellExtension"
+
+[HKEY_CLASSES_ROOT\CMDHereShellExtension\CLSID]
+@="{56576E75-D0BA-43F5-A301-313054AB6629}"
+
+[HKEY_CLASSES_ROOT\CLSID\{56576E75-D0BA-43F5-A301-313054AB6629}]
+@="CMDHereShellExtension"
+
+[HKEY_CLASSES_ROOT\CLSID\{56576E75-D0BA-43F5-A301-313054AB6629}\InprocServer32]
+@="mscoree.dll"
+"ThreadingModel"="Both"
+"Class"="CMDHereShellExtension"
+"Assembly"="CMDHere, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+"RuntimeVersion"="v2.0.50727"
+"CodeBase"="file:///C:/CMDHere/CMDHere.dll"
+
+[HKEY_CLASSES_ROOT\CLSID\{56576E75-D0BA-43F5-A301-313054AB6629}\InprocServer32\1.0.0.0]
+"Class"="CMDHereShellExtension"
+"Assembly"="CMDHere, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+"RuntimeVersion"="v2.0.50727"
+"CodeBase"="file:///C:/CMDHere/CMDHere.dll"
+
+[HKEY_CLASSES_ROOT\CLSID\{56576E75-D0BA-43F5-A301-313054AB6629}\ProgId]
+@="CMDHereShellExtension"
+
+[HKEY_CLASSES_ROOT\CLSID\{56576E75-D0BA-43F5-A301-313054AB6629}\Implemented Categories\{62C8FE65-4EBB-45E7-B440-6E39B2CDBF29}]
+
+[HKEY_CLASSES_ROOT\CMDHere]
+@="CMDHere"
+
+[HKEY_CLASSES_ROOT\CMDHere\CLSID]
+@="{351A50FF-12E6-38C4-8A7C-2B39F92A96B5}"
+
+[HKEY_CLASSES_ROOT\CLSID\{351A50FF-12E6-38C4-8A7C-2B39F92A96B5}]
+@="CMDHere"
+
+[HKEY_CLASSES_ROOT\CLSID\{351A50FF-12E6-38C4-8A7C-2B39F92A96B5}\InprocServer32]
+@="mscoree.dll"
+"ThreadingModel"="Both"
+"Class"="CMDHere"
+"Assembly"="CMDHere, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+"RuntimeVersion"="v2.0.50727"
+"CodeBase"="file:///C:/CMDHere/CMDHere.dll"
+
+[HKEY_CLASSES_ROOT\CLSID\{351A50FF-12E6-38C4-8A7C-2B39F92A96B5}\InprocServer32\1.0.0.0]
+"Class"="CMDHere"
+"Assembly"="CMDHere, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+"RuntimeVersion"="v2.0.50727"
+"CodeBase"="file:///C:/CMDHere/CMDHere.dll"
+
+[HKEY_CLASSES_ROOT\CLSID\{351A50FF-12E6-38C4-8A7C-2B39F92A96B5}\ProgId]
+@="CMDHere"
+
+[HKEY_CLASSES_ROOT\CLSID\{351A50FF-12E6-38C4-8A7C-2B39F92A96B5}\Implemented Categories\{62C8FE65-4EBB-45E7-B440-6E39B2CDBF29}]
