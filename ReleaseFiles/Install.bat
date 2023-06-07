@@ -1,118 +1,76 @@
-@ECHO OFF
+@echo off
 :SCRIPT_SELF_WRAP
-IF "%SCRIPT_SELF_WRAPPED%" EQU "TRUE" GOTO SCRIPT_SETUP_ENV
-SET "SCRIPT_SELF_WRAPPED=TRUE"
-%COMSPEC% /s /c ""%~0" %*"
-SET "SCRIPT_SELF_WRAPPED=FALSE"
-EXIT /B
+if "%script_self_wrapped%" equ "true" goto script_setup_env
+set "script_self_wrapped=true"
+%comspec% /s /c ""%~0" %*"
+set "script_self_wrapped=false"
+exit /b
 
-:FUNC_SCRIPT_EXIT
-ECHO [INFO]
-ECHO [INFO] Press any key to exit...
-PAUSE >NUL 2>&1
-ECHO [INFO] Exiting...
-EXIT
+:func_script_exit
+echo [INFO]
+echo [INFO] Press any key to exit...
+pause >nul 2>&1
+echo [INFO] Exiting...
+exit
 
-:FUNC_SCREEN_BASE
-CLS
-ECHO [INFO] ---------------------
-ECHO [INFO]   CMDHere Installer
-ECHO [INFO] ---------------------
-ECHO [INFO]
-ECHO [INFO] Made by vlOd
-ECHO [INFO]
-EXIT /B
+:func_screen_base
+cls
+echo [INFO] ---------------------
+echo [INFO]   CMDHere Installer
+echo [INFO] ---------------------
+echo [INFO]
+echo [INFO] Made by vlOd
+echo [INFO]
+exit /b
 
-:SCRIPT_SETUP_ENV
-PUSHD %~dp0
-SETLOCAL ENABLEDELAYEDEXPANSION
-SET "SCRIPT_INSTALL_PATH=%SYSTEMDRIVE%\CMDHere"
-GOTO SCRIPT_CHECK_INTEGRITY
+:script_setup_env
+pushd %~dp0
+setlocal ENABLEDELAYEDEXPANSION
+set "script_install_path=%systemdrive%\CMDHere"
+goto screen_main
 
-:SCRIPT_CHECK_INTEGRITY
-:: Declare the values used for testing
-SET "DLL_EXISTS=FALSE"
-SET "REG_FILE1_EXISTS=FALSE"
-SET "REG_FILE2_EXISTS=FALSE"
-SET "REG_FILE3_EXISTS=FALSE"
-SET "REG_FILE4_EXISTS=FALSE"
-SET "UNST_EXISTS=FALSE"
-SET "CHOICE_EXISTS=FALSE"
+:screen_main
+call :func_screen_base
+echo [INFO] This script will install the shell extension CMDHere
+echo [INFO] This shellex allows you to open a CMD at the current location
+echo [INFO]
+echo [INFO] Installation details:
+echo [INFO] - Install DIR: "%script_install_path%"
+echo [INFO] - Register: true
+echo [INFO] - Register ContextMenuHandler: true
 
-:: Set the values used for testing
-IF EXIST "CMDHere.dll" SET "DLL_EXISTS=TRUE"
-IF EXIST "reg" SET "REG_FILE1_EXISTS=TRUE"
-IF EXIST "regascxtmnhnd" SET "REG_FILE2_EXISTS=TRUE"
-IF EXIST "unreg" SET "REG_FILE3_EXISTS=TRUE"
-IF EXIST "unregascxtmnhnd" SET "REG_FILE4_EXISTS=TRUE"
-IF EXIST "unst" SET "UNST_EXISTS=TRUE"
-IF EXIST "choice.exe" SET "CHOICE_EXISTS=TRUE"
+:prompt_continue_after_main
+echo [INFO]
+choice.exe /N "[INFO] Are you sure you want to continue? [Y,N] "
+if "%errorlevel%" equ "1" goto :screen_installing
+call :func_script_exit
 
-:: Check their value
-IF "%DLL_EXISTS%" EQU "FALSE" GOTO SCREEN_INTEGRITY_FAILED
-IF "%REG_FILE1_EXISTS%" EQU "FALSE" GOTO SCREEN_INTEGRITY_FAILED
-IF "%REG_FILE2_EXISTS%" EQU "FALSE" GOTO SCREEN_INTEGRITY_FAILED
-IF "%REG_FILE3_EXISTS%" EQU "FALSE" GOTO SCREEN_INTEGRITY_FAILED
-IF "%REG_FILE4_EXISTS%" EQU "FALSE" GOTO SCREEN_INTEGRITY_FAILED
-IF "%UNST_EXISTS%" EQU "FALSE" GOTO SCREEN_INTEGRITY_FAILED
-IF "%CHOICE_EXISTS%" EQU "FALSE" GOTO SCREEN_INTEGRITY_FAILED
+:screen_installing
+call :func_screen_base
 
-:: Go to the main screen
-GOTO SCREEN_MAIN
+echo [INFO] Creating the installation directory...
+MKDIR "%script_install_path%" > nul 2>&1
 
-:SCREEN_INTEGRITY_FAILED
-CALL :FUNC_SCREEN_BASE
-ECHO [ERROR] ^^!^^!^^!^^!INTEGRITY ERROR^^!^^!^^!^^!
-ECHO [ERROR] THIS SCRIPT HAS BEEN TAMPERED WITH OR HASN'T BEEN EXTRACTED PROPERLY
-ECHO [ERROR] ^^!^^!^^!^^!INTEGRITY ERROR^^!^^!^^!^^!
-CALL :FUNC_SCRIPT_EXIT
+echo [INFO] Copying files...
+copy /b /y "CMDHere.dll" "%script_install_path%\CMDHere.dll" > nul 2>&1
+copy /b /y "unregister.reg" "%script_install_path%\unregister.reg" > nul 2>&1
+copy /b /y "unregister_as_context_menu_handler.reg" "%script_install_path%\unregister_as_context_menu_handler.reg" > nul 2>&1
+copy /b /y "uninstall.bat" "%script_install_path%\uninstall.bat" > nul 2>&1
+copy /b /y "choice.exe" "%script_install_path%\choice.exe" > nul 2>&1
 
-:SCREEN_MAIN
-CALL :FUNC_SCREEN_BASE
-ECHO [INFO] This script will install the shell extension CMDHere
-ECHO [INFO] This shellex allows you to open a CMD at the current location
-ECHO [INFO]
-ECHO [INFO] Installation details:
-ECHO [INFO] - Install DIR: "%SCRIPT_INSTALL_PATH%"
-ECHO [INFO] - Register: true
-ECHO [INFO] - Register ContextMenuHandler: true
+echo [INFO] Registering...
+reg import "register.reg" > nul 2>&1
 
-:PROMPT_CONTINUE_AFTER_MAIN
-ECHO [INFO]
-CHOICE.EXE /N "[INFO] Are you sure you want to continue? [Y,N] "
-IF "%ERRORLEVEL%" EQU "1" GOTO :SCREEN_INSTALLING
-CALL :FUNC_SCRIPT_EXIT
+echo [INFO] Registering ContextMenuHandler...
+reg import "register_as_context_menu_handler.reg" > nul 2>&1
 
-:SCREEN_INSTALLING
-CALL :FUNC_SCREEN_BASE
+echo [INFO]
+echo [INFO] Press any key to continue...
+pause >nul 2>&1
 
-ECHO [INFO] Creating the installation directory...
-PING -n 2 127.0.0.1 > NUL 2>&1
-MKDIR "%SCRIPT_INSTALL_PATH%" > NUL 2>&1
+goto screen_installation_finished
 
-ECHO [INFO] Copying files...
-PING -n 2 127.0.0.1 > NUL 2>&1
-COPY /B /Y "CMDHere.dll" "%SCRIPT_INSTALL_PATH%\CMDHere.dll" > NUL 2>&1
-COPY /B /Y "unreg" "%SCRIPT_INSTALL_PATH%\unreg" > NUL 2>&1
-COPY /B /Y "unregascxtmnhnd" "%SCRIPT_INSTALL_PATH%\unregascxtmnhnd" > NUL 2>&1
-COPY /B /Y "unst" "%SCRIPT_INSTALL_PATH%\Uninstall.bat" > NUL 2>&1
-COPY /B /Y "choice.exe" "%SCRIPT_INSTALL_PATH%\choice.exe" > NUL 2>&1
-
-ECHO [INFO] Registering...
-PING -n 3 127.0.0.1 > NUL 2>&1
-REG IMPORT "reg" > NUL 2>&1
-
-ECHO [INFO] Registering ContextMenuHandler...
-PING -n 3 127.0.0.1 > NUL 2>&1
-REG IMPORT regascxtmnhnd > NUL 2>&1
-
-ECHO [INFO]
-ECHO [INFO] Press any key to continue...
-PAUSE >NUL 2>&1
-
-GOTO SCREEN_INSTALLATION_FINISHED
-
-:SCREEN_INSTALLATION_FINISHED
-CALL :FUNC_SCREEN_BASE
-ECHO [INFO] The installation was completed successfully.
-CALL :FUNC_SCRIPT_EXIT
+:screen_installation_finished
+call :func_screen_base
+echo [INFO] The installation was completed successfully.
+call :func_script_exit
